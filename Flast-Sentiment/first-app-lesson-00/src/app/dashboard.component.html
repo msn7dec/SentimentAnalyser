@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+    <div class="header">
+      <h2>Dashboard</h2>
+    </div>
+    <div class="video-grid">
+      <div class="video-card" *ngFor="let video of videos">
+        <div class="video-thumbnail">
+          <img [src]="video.thumbnail" [alt]="video.title">
+        </div>
+        <div class="video-details">
+          <h3>{{ video.title }}</h3>
+          <p>{{ video.description }}</p>
+          <div class="video-actions">
+            <button class="like-button" (click)="likeVideo(video)">
+              <i class="fas fa-thumbs-up"></i> 👍 {{video.likes || 0}} Like
+            </button>
+            <button class="comment-button" (click)="commentVideo(video)">
+              <i class="fas fa-comment"></i> Comment
+            </button>
+          </div>
+        </div>
+        <div class="comment-section">
+          <div class="comment-list">
+            <div class="comment" *ngFor="let comment of video.comments">
+              <div class="comment-avatar">
+                <img [src]="comment.avatar" [alt]="comment.author">
+              </div>
+              <div class="comment-content">
+                <div class="comment-header">
+                    <p class="comment-author">{{ comment.author }}</p>
+                    <!-- <button class="post-button" (click)="evaluateComment(comment)">Evaluate</button> -->
+                    <button class="post-button" [ngClass]="{'positive-button': comment.sentiment === 'positive', 'negative-button': comment.sentiment === 'negative'}" (click)="evaluateComment(comment)">
+                        {{ comment.sentiment ? (comment.sentiment | titlecase) : 'Evaluate' }}
+                        <span *ngIf="comment.isLoading" class="spinner"></span>
+                    </button>
+                </div>
+
+                <p class="comment-text">{{ comment.text }}</p>
+                
+              </div>
+            </div>
+          </div>
+          <div class="add-comment">
+            <div class="comment-avatar">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStsz-ePYChlKmmDp0G6-3nUZOJQ3d8KmY7DA&s" alt="User Avatar">
+            </div>
+            <div class="comment-input">
+              <input type="text" [(ngModel)]="newComment" placeholder="Write a comment...">
+              <button class="post-button" (click)="addComment(video)">Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,7 @@
+flask
+textblob
+flask_cors
+torch
+transformers
+flask_sqlalchemy
+flask_restful
