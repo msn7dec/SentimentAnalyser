@@ -55,6 +55,17 @@ export class DashboardComponent implements OnInit {
       );
     }
 
+    isMenuCollapsed = false;
+    activeLink = 'dashboard';
+  
+    toggleMenu() {
+      this.isMenuCollapsed = !this.isMenuCollapsed;
+    }
+  
+    setActiveLink(link: string) {
+      this.activeLink = link;
+    }
+
   showCommentSection = false;
   toggleCommentSection(video: Video) {
         video.showCommentSection = !video.showCommentSection;

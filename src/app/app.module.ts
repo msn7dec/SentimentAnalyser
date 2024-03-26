@@ -7,13 +7,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login.component';
 import { CommentEvaluationService } from './coomment-evaluation.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CaptionComponent } from './caption.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    CaptionComponent
   ],
   imports: [
     BrowserModule, FormsModule, AppRoutingModule, HttpClientModule // <<<< And here

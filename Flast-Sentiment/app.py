@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource, fields, marshal_with
 from flask_cors import CORS
 from transformers import pipeline
+from ImageToText import SemanticGenerator, CaptionsGenerator
+import asyncio
 
 app = Flask(__name__)
 CORS(app)
@@ -176,12 +178,46 @@ class UpdateSentiments(Resource):
         else:
             return {'message': 'Video not found'}, 404
         
+class CaptionGeneratorResource(Resource):
+    def post(self):
+        try:
+            file = request.files.get('image')
+            print('Request payload:', file)
+            if file is None:
+                return {'error': 'Missing file parameter in the request payload'}, 400
+
+            textImage = SemanticGenerator()
+            responseText = textImage.query(file)
+
+            captionGen = CaptionsGenerator()
+            if responseText.get('generated_text'):
+                payload = captionGen.makePayload(responseText.get('generated_text'))
+                print('Response payload: coming here')
+                res = captionGen.query(payload)
+                print('Response payload:', res[0].get('generated_text'))
+
+                # Return the generated caption
+                return {'generated_text': res[0].get('generated_text').split('Answer:')[-1]}, 200
+
+            # If no caption was generated, return an error
+            return {'error': 'Failed to generate caption'}, 500
+
+        except KeyError:
+            return {'error': 'Missing "image" parameter in the request payload'}, 400
+        except Exception as e:
+            # Log the exception for debugging purposes
+            print(f'Exception occurred: {e}')
+            return {'error': 'An internal server error occurred'}, 500
+        
 # API routes
 api.add_resource(VideoResources, '/videos')
 api.add_resource(VideoResource, '/videos/<int:video_id>')
 api.add_resource(CommentResource, '/videos/<int:video_id>/comments')
 api.add_resource(SentimentAnalysisResource, '/evaluate')
 api.add_resource(AddLikesResource, '/videos/<int:video_id>/likes')
+api.add_resource(CaptionGeneratorResource, '/captions')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

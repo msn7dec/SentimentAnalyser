@@ -1,0 +1,51 @@
+<div class="dashboard-container">
+    <div class="left-navigation" id="leftNav">
+        <ul>
+            <li><a href="dashboard" [class.active]="activeLink === 'dashboard'" (click)="setActiveLink('dashboard')"><i
+                        class="fas fa-home"></i> Home</a></li>
+            <li><a href="caption" [class.active]="activeLink === 'caption'" (click)="setActiveLink('caption')"><i
+                        class="fas fa-closed-captioning"></i> Caption</a></li>
+            <li><a href="#"><i class="fas fa-list-alt"></i> Playlists</a></li>
+            <li><a href="#"><i class="fas fa-tv"></i> Channels</a></li>
+            <li><a href="#"><i class="fas fa-video"></i> Videos</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="header caption-generator">
+          <h2>Caption Generator</h2>
+        </div>
+        <div class="caption-generator">
+          <div class="row">
+            <div class="col">
+              <h2>Upload Image</h2>
+              <div class="image-upload" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)">
+                <div class="dropzone" [ngClass]="{'highlight': dragOver}">
+                  <p>Drag and drop an image here or click to select a file</p>
+                  <input type="file" (change)="onFileSelected($event)" accept="image/*">
+                </div>
+                <div class="image-preview" *ngIf="imageUrl">
+                  <img [src]="imageUrl" alt="Uploaded Image">
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <h2>Generated Caption</h2>
+              <div class="caption-output">
+                    <div *ngIf="isAddSpinerLoading" class="spinner-container">
+                        <div class="spinner"></div>
+                </div>
+                <p *ngIf="generatedCaption" class="caption-text">{{ generatedCaption }}</p>
+                <p *ngIf="!generatedCaption && !isAddSpinerLoading">No caption generated yet.</p>
+              </div>
+            </div>
+          </div>
+          <div class="video-actions">
+            <button (click)="generateCaption()" [disabled]="!imageUrl">
+              <i class="fas fa-magic"></i> Generate Caption
+            </button>
+          </div>
+        </div>
+      </div>
+</div>

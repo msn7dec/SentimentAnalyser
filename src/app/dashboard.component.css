@@ -1,8 +1,78 @@
-.dashboard-container {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+.left-navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-}
+    box-sizing: border-box;
+    transition: left 0.3s ease;
+  }
+
+  .left-navigation.collapsed {
+    left: -260px;
+  }
+
+  .burger {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .left-navigation ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .left-navigation li {
+    margin-bottom: 10px;
+  }
+
+  .left-navigation a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .left-navigation a:hover {
+    background-color: #f0f2f5;
+  }
+
+  .left-navigation a.active {
+    background-color: #e7f3ff;
+    color: #1877f2;
+    font-weight: bold;
+  }
+
+  .left-navigation a i {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+
+  /* Main content */
+  .dashboard-container {
+    margin-left: 320px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+  }
+
+  .dashboard-container.collapsed {
+    margin-left: 60px;
+  }
+
+  .header h2 {
+    margin-top: 0;
+  }
 
 .header {
     background-color: #fff;
@@ -59,12 +129,13 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-out;
-  }
-  
-  .comment-section.open {
-    max-height: 500px; /* Adjust this value based on your comment section height */
-  }
-  
+}
+
+.comment-section.open {
+    max-height: 500px;
+    /* Adjust this value based on your comment section height */
+}
+
 
 .comment-list {
     margin-bottom: 20px;
@@ -181,6 +252,7 @@
     background-color: #ffcdd2;
     color: #b71c1c;
 }
+
 .spinner {
     display: inline-block;
     width: 20px;
@@ -190,13 +262,14 @@
     border-top-color: #333;
     animation: spin 1s ease-in-out infinite;
     margin-left: 8px;
-  }
-  
-  @keyframes spin {
+}
+
+@keyframes spin {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
+}

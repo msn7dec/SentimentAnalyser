@@ -9,6 +9,91 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    /* General styles */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    /* Left navigation menu */
+    .left-navigation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .left-navigation ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .left-navigation li {
+      margin-bottom: 10px;
+    }
+
+    .left-navigation a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .left-navigation a:hover {
+      background-color: #f0f2f5;
+    }
+
+    .left-navigation a.active {
+      background-color: #e7f3ff;
+      color: #1877f2;
+      font-weight: bold;
+    }
+
+    .left-navigation a i {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    /* Main content */
+    .dashboard-container {
+      margin-left: 320px;
+      padding: 20px;
+    }
+
+    .header h2 {
+      margin-top: 0;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .video-card {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .video-thumbnail img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
 <body>
   <app-root></app-root>
