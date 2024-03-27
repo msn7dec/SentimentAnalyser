@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CaptionService } from './caption-service';
 import { HttpClientModule } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
+interface Image {
+    id: number;
+    text: string;
+    file: any;
+    image_desc: string;
+    caption: string;
+    image_url: any;
+  }
 
 @Component({
     standalone: true,
@@ -15,15 +24,37 @@ import { HttpClientModule } from '@angular/common/http';
     providers: [CaptionService]
 })
 
-export class CaptionComponent {
+export class CaptionComponent implements OnInit {
 
     imageUrl: string | null = null;
     generatedCaption: string | null = null;
     dragOver: boolean = false;
     selectedFile: File | null = null;
     isAddSpinerLoading: boolean = false;
+    imagesObject: any = [];
+    
+    constructor(private captionService: CaptionService, private sanitizer: DomSanitizer) { }
+    
+    ngOnInit() {
+        this.getImages();
+    }
 
-    constructor(private captionService: CaptionService) { }
+    getImages() {
+        this.captionService.getImages().subscribe(
+            (response) => {
+                console.log(response);
+                for (let i = 0; i < response.length; i++) {
+                    let objectURL = 'data:image/jpeg;base64,' + response[0].file;
+                    console.log(objectURL);
+                    response[0].image_url = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+                }
+                this.imagesObject = response
+            },
+            (error) => {
+                console.error('Error fetching images:', error);
+            }
+        );
+    }
 
     activeLink = 'caption';
 
@@ -72,36 +103,52 @@ export class CaptionComponent {
     handleFile(file: File) {
         this.imageUrl = URL.createObjectURL(file);
         const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = () => {
             this.selectedFile = file;
             this.imageUrl = reader.result as string;
         };
-        reader.readAsDataURL(file);
+        
     }
 
     generateCaption() {
         if (this.selectedFile) {
             this.isAddSpinerLoading = true;
-            const formData = new FormData();
-            formData.append('image', this.selectedFile);
-            console.log(this.selectedFile);
-            this.captionService.getCaption(formData)
-                .subscribe(
-                    (response) => {
-                        console.log("Inside the success");
-                        console.log(response.generated_text)
-                        this.generatedCaption = response.generated_text;
-                        this.isAddSpinerLoading = false;
-                    },
-                    (error) => {
-                        console.error('Error generating caption:', error);
-                        this.isAddSpinerLoading = false;
-                    }
-                );
+            const reader = new FileReader();
+            if (this.selectedFile) {
+                reader.readAsArrayBuffer(this.selectedFile);
+            }
+
+            reader.onload = () => {
+                if (reader.result) {
+                    const blob = new Blob([reader.result], { type: this.selectedFile!.type });
+                    console.log('reader.result object is' , reader.result);
+                    const formData = new FormData();
+                    formData.append('image', blob, this.selectedFile?.name);
+                    this.captionService.getCaption(formData)
+                        .subscribe(
+                            (response) => {
+                                console.log("Inside the success");
+                                console.log(response.generated_text)
+                                this.generatedCaption = response.generated_text;
+                                this.isAddSpinerLoading = false;
+                            },
+                            (error) => {
+                                console.error('Error generating caption:', error);
+                                this.isAddSpinerLoading = false;
+                            }
+                        );
+                }
+            }
+
+
         }
     }
 
 }
+
+
+
 
 
 

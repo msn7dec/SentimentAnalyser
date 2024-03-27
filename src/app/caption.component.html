@@ -47,5 +47,31 @@
             </button>
           </div>
         </div>
+        <div class="header caption-generator">
+            <!-- <h2>Caption Generatored</h2> -->
+        </div>
+        <div class="caption-generator">
+            <h2>Caption Generatored</h2>
+            <div class="row" *ngFor="let image of imagesObject">
+              <div class="col">
+                <div>
+                  <!-- <div class="image-preview" >
+                    <img [src]="image.image_url"><p class="caption-text">{{ image.image_desc }}</p>
+                  </div> -->
+                  <div class="caption-output">
+                    <p class="caption-text">{{ image.image_desc }}</p>
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="col">
+                <div class="caption-output">
+                  <p class="caption-text">{{ image.caption }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
       </div>
 </div>
